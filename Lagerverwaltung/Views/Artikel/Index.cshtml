@@ -1,0 +1,35 @@
+﻿@{
+    ViewData["Title"] = "Artikel";
+}
+
+<div class="text-center">
+    <h1>Artikel</h1>
+</div>
+
+<div class="container">
+    <a class="btn btn-primary" asp-controller="Artikel" asp-action="CreateEditArtikel">neuen Artikel anlegen</a>
+    <table id="ArtikelTable" class="table table-bordered table-striped table-hover bg-light stripe">
+        <thead>
+            <tr>
+                <th>Artikel Nr.</th>
+                <th>Name</th>
+                <th>Kategorie</th>
+                <th>Beschreibung</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                foreach (Artikel artikel in Model)
+                {
+                    <tr>
+                        <td>@artikel.Id</td>
+                        <td>@artikel.Name</td>
+                        <td>@artikel.KategorieID</td>
+                        <td>@artikel.Beschreibung</td>
+                        <td><a asp-route-id="@artikel.Id" class="btn btn-warning" asp-controller="Artikel" asp-action="CreateEditArtikel">bearbeiten</a></td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
