@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.32804.182
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lagerverwaltung", "Lagerverwaltung\Lagerverwaltung.csproj", "{B270E10B-FC6D-4C14-BC39-E2E313E55058}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B270E10B-FC6D-4C14-BC39-E2E313E55058}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B270E10B-FC6D-4C14-BC39-E2E313E55058}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B270E10B-FC6D-4C14-BC39-E2E313E55058}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B270E10B-FC6D-4C14-BC39-E2E313E55058}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {91BB414E-EACD-4973-B612-B27A89BCFA25}
+	EndGlobalSection
+EndGlobal
