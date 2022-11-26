@@ -4,6 +4,7 @@ using Lagerverwaltung.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Lagerverwaltung.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221126093758_moreTables")]
+    partial class moreTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -55,13 +57,21 @@ namespace Lagerverwaltung.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<int>("ArtikelID")
+                        .HasColumnType("int");
+
                     b.Property<string>("Bemerkungen")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("KundeID")
                         .HasColumnType("int");
 
+                    b.Property<int>("Menge")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("ArtikelID");
 
                     b.HasIndex("KundeID");
 
@@ -188,38 +198,6 @@ namespace Lagerverwaltung.Data.Migrations
                     b.HasIndex("LagerortID");
 
                     b.ToTable("Lagerplatz");
-                });
-
-            modelBuilder.Entity("Lagerverwaltung.Models.Positionen", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("ArtikelID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("AuftragsID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Bemerkungen")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Menge")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PositionsNummer")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ArtikelID");
-
-                    b.HasIndex("AuftragsID");
-
-                    b.ToTable("Position");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -437,11 +415,19 @@ namespace Lagerverwaltung.Data.Migrations
 
             modelBuilder.Entity("Lagerverwaltung.Models.Auftrag", b =>
                 {
+                    b.HasOne("Lagerverwaltung.Models.Artikel", "Artikel")
+                        .WithMany()
+                        .HasForeignKey("ArtikelID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Lagerverwaltung.Models.Kunde", "Kunde")
                         .WithMany()
                         .HasForeignKey("KundeID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Artikel");
 
                     b.Navigation("Kunde");
                 });
@@ -463,25 +449,6 @@ namespace Lagerverwaltung.Data.Migrations
                     b.Navigation("Artikel");
 
                     b.Navigation("Lagerort");
-                });
-
-            modelBuilder.Entity("Lagerverwaltung.Models.Positionen", b =>
-                {
-                    b.HasOne("Lagerverwaltung.Models.Artikel", "Artikel")
-                        .WithMany()
-                        .HasForeignKey("ArtikelID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Lagerverwaltung.Models.Auftrag", "Auftrag")
-                        .WithMany()
-                        .HasForeignKey("AuftragsID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Artikel");
-
-                    b.Navigation("Auftrag");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

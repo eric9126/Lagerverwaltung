@@ -13,18 +13,27 @@
             <tr>
                 <th>Artikel Nr.</th>
                 <th>Name</th>
+                <th>Kategorie ID</th>
                 <th>Kategorie</th>
                 <th>Beschreibung</th>
             </tr>
         </thead>
         <tbody>
             @{
-                foreach (Artikel artikel in Model)
+                foreach (Artikel artikel in Model.Artikel)
                 {
                     <tr>
                         <td>@artikel.Id</td>
                         <td>@artikel.Name</td>
                         <td>@artikel.KategorieID</td>
+
+                        @foreach (Kategorien kategorien in Model.Kategorien){
+                            if (artikel.KategorieID == kategorien.Id)
+                            {
+                                <td>@kategorien.Bezeichnung</td>
+                            }
+                        }
+
                         <td>@artikel.Beschreibung</td>
                         <td><a asp-route-id="@artikel.Id" class="btn btn-warning" asp-controller="Artikel" asp-action="CreateEditArtikel">bearbeiten</a></td>
                     </tr>

@@ -14,6 +14,6 @@ namespace Lagerverwaltung.Models
         public virtual Kategorien Kategorie { get; set; }
 
 
-        public string Beschreibung { get; set; }
+        public string? Beschreibung { get; set; }
     }
 }

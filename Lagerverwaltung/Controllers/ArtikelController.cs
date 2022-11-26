@@ -1,6 +1,7 @@
 ﻿using Lagerverwaltung.Data.Migrations;
 using Lagerverwaltung.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Dynamic;
 
 namespace Lagerverwaltung.Controllers
 {
@@ -14,8 +15,12 @@ namespace Lagerverwaltung.Controllers
         }
         public IActionResult Index()
         {
-            var ArtikelFromDB = _context.Artikel.ToList();
-            return View(ArtikelFromDB);
+
+            dynamic mymodel = new ExpandoObject();
+            mymodel.Artikel = _context.Artikel.ToList();
+            mymodel.Kategorien = _context.Kategorien.ToList();
+            return View(mymodel);
+
         }
 
         //Controller der Seite zum bearbeiten / hinzufügen
@@ -56,7 +61,7 @@ namespace Lagerverwaltung.Controllers
                 }
 
                 ArtikelFromDB.Name = artikel.Name;
-                ArtikelFromDB.Kategorie = artikel.Kategorie;
+                ArtikelFromDB.KategorieID = artikel.KategorieID;
                 ArtikelFromDB.Beschreibung = artikel.Beschreibung;
 
             }
