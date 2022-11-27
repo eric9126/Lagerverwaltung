@@ -1,0 +1,50 @@
+﻿@model Lagerverwaltung.Models.Positionen
+
+@{
+    ViewData["Title"] = "Position erstellen oder bearbeiten";
+}
+
+<form asp-controller="Position" asp-action="ExecuteCreateOrEditPosition" enctype="multipart/form-data">
+    <div class="card">
+        <div class="card-header">
+            <h5>Position bearbeiten oder neu erstellen</h5>
+        </div>
+
+        <div class="card-body">
+
+            <input hidden asp-for="Id"/>
+
+            <div class="row">
+                <div class="col">
+                    <label>Auftrags-ID</label>
+                    <input class="form-control" asp-for="AuftragsID" type="number"/>
+                </div>
+                <div class="col">
+                    <label>Positions Nummer</label>
+                    <input class="form-control" asp-for="PositionsNummer" type="number"/>
+                </div>
+                <div class="col">
+                    <label>Artikel ID</label>
+                    <input class="form-control" asp-for="ArtikelID" type="number" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <label>Menge</label>
+                    <input class="form-control" asp-for="Menge" type="number" />
+                </div>
+                <div class="col">
+                    <label>Bemerkungen</label>
+                    <input class="form-control" asp-for="Bemerkungen" type="text" />
+                </div>
+            </div>
+            
+        </div>
+
+        <div class="card-footer">
+            <button class="btn btn-primary" type="submit">Speichern</button>
+            <button class="btn btn-danger" asp-controller="Position" asp-action="BackToPosition">Abbrechen</button>
+        </div>
+
+    </div>   
+</form>

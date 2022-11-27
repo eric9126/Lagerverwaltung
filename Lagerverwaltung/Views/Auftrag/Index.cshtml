@@ -1,0 +1,33 @@
+﻿@{
+    ViewData["Title"] = "Auftrag";
+}
+
+<div class="text-center">
+    <h1>Auftrag</h1>
+</div>
+
+<div class="container">
+    <a class="btn btn-primary" asp-controller="Auftrag" asp-action="CreateEditAuftrag">neuen Auftrag anlegen</a>
+    <table id="AuftragTable" class="table table-bordered table-striped table-hover bg-light stripe">
+        <thead>
+            <tr>
+                <th>Auftrags Nr.</th>
+                <th>Kunden ID</th>
+                <th>Bemerkungen</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                foreach (Auftrag Auftrage in Model)
+                {
+                    <tr>
+                        <td>@Auftrage.Id</td>
+                        <td>@Auftrage.KundeID</td>
+                        <td>@Auftrage.Bemerkungen</td>
+                        <td><a asp-route-id="@Auftrage.Id" class="btn btn-warning" asp-controller="Auftrag" asp-action="CreateEditAuftrag">bearbeiten</a></td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,36 @@
+﻿@model Lagerverwaltung.Models.Auftrag
+
+@{
+    ViewData["Title"] = "Auftrag erstellen oder bearbeiten";
+}
+
+<form asp-controller="Auftrag" asp-action="ExecuteCreateOrEditAuftrag" enctype="multipart/form-data">
+    <div class="card">
+        <div class="card-header">
+            <h5>Auftrag bearbeiten oder neu erstellen</h5>
+        </div>
+
+        <div class="card-body">
+
+            <input hidden asp-for="Id"/>
+
+            <div class="row">
+                <div class="col">
+                    <label>Kunden-ID</label>
+                    <input class="form-control" asp-for="KundeID" type="number"/>
+                </div>
+                <div class="col">
+                    <label>Bemerkungen</label>
+                    <input class="form-control" asp-for="Bemerkungen" type="text" />
+                </div>
+            </div>
+            
+        </div>
+
+        <div class="card-footer">
+            <button class="btn btn-primary" type="submit">Speichern</button>
+            <button class="btn btn-danger" asp-controller="Auftrag" asp-action="BackToAuftrag">Abbrechen</button>
+        </div>
+
+    </div>   
+</form>

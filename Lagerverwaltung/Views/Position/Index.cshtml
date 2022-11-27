@@ -1,0 +1,39 @@
+﻿@{
+    ViewData["Title"] = "Positionen";
+}
+
+<div class="text-center">
+    <h1>Positionen</h1>
+</div>
+
+<div class="container">
+    <a class="btn btn-primary" asp-controller="Position" asp-action="CreateEditPosition">neue Position anlegen</a>
+    <table id="PositionTable" class="table table-bordered table-striped table-hover bg-light stripe">
+        <thead>
+            <tr>
+                <th>Position Nr.</th>
+                <th>Auftrags ID</th>
+                <th>Positions Nummer</th>
+                <th>Artikel ID</th>
+                <th>Menge</th>
+                <th>Bemerkungen</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                foreach (Positionen Position in Model)
+                {
+                    <tr>
+                        <td>@Position.Id</td>
+                        <td>@Position.AuftragsID</td>
+                        <td>@Position.PositionsNummer</td>
+                        <td>@Position.ArtikelID</td>
+                        <td>@Position.Menge</td>
+                        <td>@Position.Bemerkungen</td>
+                        <td><a asp-route-id="@Position.Id" class="btn btn-warning" asp-controller="Position" asp-action="CreateEditPosition">bearbeiten</a></td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
