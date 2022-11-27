@@ -1,0 +1,33 @@
+﻿@{
+    ViewData["Title"] = "Lagerort";
+}
+
+<div class="text-center">
+    <h1>Lagerort</h1>
+</div>
+
+<div class="container">
+    <a class="btn btn-primary" asp-controller="Lagerort" asp-action="CreateEditLagerort">neuen Lagerort anlegen</a>
+    <table id="LagerortTable" class="table table-bordered table-striped table-hover bg-light stripe">
+        <thead>
+            <tr>
+                <th>Lagerort Nr.</th>
+                <th>Bezeichnung</th>
+                <th>Ort</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                foreach (Lagerort lagerorte in Model)
+                {
+                    <tr>
+                        <td>@lagerorte.Id</td>
+                        <td>@lagerorte.Bezeichnung</td>
+                        <td>@lagerorte.Ort</td>
+                        <td><a asp-route-id="@lagerorte.Id" class="btn btn-warning" asp-controller="Lagerort" asp-action="CreateEditLagerort">bearbeiten</a></td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>

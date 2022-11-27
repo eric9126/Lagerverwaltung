@@ -1,0 +1,36 @@
+﻿@model Lagerverwaltung.Models.Lagerort
+
+@{
+    ViewData["Title"] = "Lagerort erstellen oder bearbeiten";
+}
+
+<form asp-controller="Lagerort" asp-action="ExecuteCreateOrEditLagerort" enctype="multipart/form-data">
+    <div class="card">
+        <div class="card-header">
+            <h5>Lagerort bearbeiten oder neu erstellen</h5>
+        </div>
+
+        <div class="card-body">
+
+            <input hidden asp-for="Id"/>
+
+            <div class="row">
+                <div class="col">
+                    <label>Bezeichnung</label>
+                    <input class="form-control" asp-for="Bezeichnung" type="text"/>
+                </div>
+                <div class="col">
+                    <label>Lagerort</label>
+                    <input class="form-control" asp-for="Ort" type="text"/>
+                </div>
+            </div>
+            
+        </div>
+
+        <div class="card-footer">
+            <button class="btn btn-primary" type="submit">Speichern</button>
+            <button class="btn btn-danger" asp-controller="Lagerort" asp-action="BackToLagerort">Abbrechen</button>
+        </div>
+
+    </div>   
+</form>

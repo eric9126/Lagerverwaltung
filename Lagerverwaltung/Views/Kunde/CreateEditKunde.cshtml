@@ -1,0 +1,66 @@
+﻿@model Lagerverwaltung.Models.Kunde
+
+@{
+    ViewData["Title"] = "Kunde erstellen oder bearbeiten";
+}
+
+<form asp-controller="Kunde" asp-action="ExecuteCreateOrEditKunde" enctype="multipart/form-data">
+    <div class="card">
+        <div class="card-header">
+            <h5>Kunde bearbeiten oder neu erstellen</h5>
+        </div>
+
+        <div class="card-body">
+
+            <input hidden asp-for="Id"/>
+
+            <div class="row">
+                <div class="col">
+                    <label>Vorname</label>
+                    <input class="form-control" asp-for="Vorname" type="text"/>
+                </div>
+                <div class="col">
+                    <label>Nachname</label>
+                    <input class="form-control" asp-for="Name" type="text"/>
+                </div>
+                <div class="col">
+                    <label>Firma</label>
+                    <input class="form-control" asp-for="Firma" type="text" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <label>Strasse</label>
+                    <input class="form-control" asp-for="Strasse" type="text" />
+                </div>
+                <div class="col">
+                    <label>Postleitzahl</label>
+                    <input class="form-control" asp-for="PLZ" type="text" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <label>Telefon</label>
+                    <input class="form-control" asp-for="Telefon" type="text" />
+                </div>
+                <div class="col">
+                    <label>Ansprechpartner</label>
+                    <input class="form-control" asp-for="Ansprechpartner" type="text" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <label>Bemerkungen</label>
+                    <input class="form-control" asp-for="Bemerkungen" type="text" />
+                </div>
+            </div>
+            
+        </div>
+
+        <div class="card-footer">
+            <button class="btn btn-primary" type="submit">Speichern</button>
+            <button class="btn btn-danger" asp-controller="Kunde" asp-action="BackToKunde">Abbrechen</button>
+        </div>
+
+    </div>   
+</form>
