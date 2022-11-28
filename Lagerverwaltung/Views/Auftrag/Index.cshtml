@@ -1,9 +1,9 @@
 ﻿@{
-    ViewData["Title"] = "Auftrag";
+    ViewData["Title"] = "Aufträge";
 }
 
 <div class="text-center">
-    <h1>Auftrag</h1>
+    <h1>Aufträge</h1>
 </div>
 
 <div class="container">
@@ -13,18 +13,44 @@
             <tr>
                 <th>Auftrags Nr.</th>
                 <th>Kunden ID</th>
+                <th>Firma</th>
+                <th>Ansprechpartner</th>
                 <th>Bemerkungen</th>
+                <th>Gebucht</th>
             </tr>
         </thead>
         <tbody>
             @{
-                foreach (Auftrag Auftrage in Model)
+                foreach (Auftrag Auftrage in Model.Auftrag)
                 {
                     <tr>
                         <td>@Auftrage.Id</td>
                         <td>@Auftrage.KundeID</td>
+
+                        @foreach (Kunde kunde in Model.Kunde)
+                        {
+                            if (kunde.Id == Auftrage.KundeID)
+                            {
+                                <td>@kunde.Firma</td>
+                                <td>@kunde.Ansprechpartner</td>
+                            }
+                        }
+
                         <td>@Auftrage.Bemerkungen</td>
+                        <th>@Auftrage.Gebucht</th>
                         <td><a asp-route-id="@Auftrage.Id" class="btn btn-warning" asp-controller="Auftrag" asp-action="CreateEditAuftrag">bearbeiten</a></td>
+
+                        @if (Auftrage.Gebucht == false)
+                        {
+                            <td><a asp-route-id="@Auftrage.Id" class="btn btn-warning" asp-controller="Auftrag" asp-action="AuftragBuchen">Auftrag ausbuchen</a></td>
+                        }
+
+                        @if (Auftrage.Gebucht == true)
+                        {
+                            <td><a asp-route-id="@Auftrage.Id" class="btn btn-warning" asp-controller="Auftrag" asp-action="AuftragZurueckBuchen">Auftrag zurück buchen</a></td>
+                        }
+                        
+
                     </tr>
                 }
             }

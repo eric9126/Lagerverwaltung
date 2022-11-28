@@ -16,7 +16,8 @@ namespace Lagerverwaltung.Data
         public DbSet<Lagerort> Lagerort { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
-        {            
+        {
+            
         }
     }
 }

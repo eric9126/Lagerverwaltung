@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Lagerverwaltung.Models
@@ -17,7 +18,11 @@ namespace Lagerverwaltung.Models
         public int ArtikelID { get; set; }
         public virtual Artikel Artikel { get; set; }
 
-        public int Menge { get; set; }
+        public int Menge { get; set; }      
+        public int LagerplatzID { get; set; }
         public string? Bemerkungen { get; set; }
+
     }
+
+    
 }

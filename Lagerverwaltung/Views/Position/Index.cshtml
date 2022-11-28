@@ -13,22 +13,52 @@
             <tr>
                 <th>Position Nr.</th>
                 <th>Auftrags ID</th>
+                <th>Auftrags Bemerkungen</th>
                 <th>Positions Nummer</th>
                 <th>Artikel ID</th>
+                <th>Artikel Name</th>
                 <th>Menge</th>
+                <th>Lagerplatz</th>
                 <th>Bemerkungen</th>
             </tr>
         </thead>
         <tbody>
             @{
-                foreach (Positionen Position in Model)
+                foreach (Positionen Position in Model.Position)
                 {
                     <tr>
                         <td>@Position.Id</td>
                         <td>@Position.AuftragsID</td>
+
+                        @foreach (Auftrag auftrag in Model.Auftrag)
+                        {
+                            if (auftrag.Id == Position.AuftragsID)
+                            {
+                                <td>@auftrag.Bemerkungen</td>
+                            }
+                        }
+
                         <td>@Position.PositionsNummer</td>
                         <td>@Position.ArtikelID</td>
+
+                        @foreach (Artikel artikel in Model.Artikel)
+                        {
+                            if (artikel.Id == Position.ArtikelID)
+                            {
+                                <td>@artikel.Name</td>
+                            }
+                        }
+
                         <td>@Position.Menge</td>
+
+                        @foreach (Lagerplatz lagerplatz in Model.Lagerplatz)
+                        {
+                            if (lagerplatz.Id == Position.LagerplatzID)
+                            {
+                                <td>@lagerplatz.Bezeichnung</td>
+                            }
+                        }
+
                         <td>@Position.Bemerkungen</td>
                         <td><a asp-route-id="@Position.Id" class="btn btn-warning" asp-controller="Position" asp-action="CreateEditPosition">bearbeiten</a></td>
                     </tr>

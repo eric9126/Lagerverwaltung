@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Dynamic;
 
 namespace Lagerverwaltung.Controllers
 {
@@ -12,8 +13,11 @@ namespace Lagerverwaltung.Controllers
         }
         public IActionResult Index()
         {
-            var LagerplatzFromDB = _context.Lagerplatz.ToList();
-            return View(LagerplatzFromDB);
+            dynamic mymodel = new ExpandoObject();
+            mymodel.Lagerplatz = _context.Lagerplatz.ToList();
+            mymodel.Artikel = _context.Artikel.ToList();
+
+            return View(mymodel);
         }
 
         //Controller der Seite zum bearbeiten / hinzufügen

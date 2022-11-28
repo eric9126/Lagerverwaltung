@@ -24,6 +24,18 @@
                     <input class="form-control" asp-for="Bemerkungen" type="text" />
                 </div>
             </div>
+
+            <div class="row">
+                <div class="col">
+                    <label>Kunde</label>
+                    <select class="form-select">
+                        @foreach (Kunde kunde in @ViewBag.Kunde)
+                        {
+                            <option>@kunde.Id | @kunde.Firma @kunde.Name @kunde.Vorname</option>
+                        }
+                    </select>
+                </div>
+            </div>
             
         </div>
 

@@ -4,6 +4,7 @@ using Lagerverwaltung.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Lagerverwaltung.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221128112341_neu")]
+    partial class neu
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -210,8 +212,9 @@ namespace Lagerverwaltung.Data.Migrations
                     b.Property<string>("Bemerkungen")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("LagerplatzID")
-                        .HasColumnType("int");
+                    b.Property<string>("LagerplatzID")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Menge")
                         .HasColumnType("int");
