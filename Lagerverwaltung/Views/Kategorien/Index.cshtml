@@ -15,6 +15,8 @@
                 <th>Bezeichnung</th>
                 <th>Farbe</th>
                 <th>Bemerkungen</th>
+                <th>Bearbeiten</th>
+                <th>Löschen</th>
             </tr>
         </thead>
         <tbody>
@@ -27,9 +29,48 @@
                         <td>@kategorien.Farbe</td>
                         <td>@kategorien.Bemerkungen</td>
                         <td><a asp-route-id="@kategorien.Id" class="btn btn-warning" asp-controller="Kategorien" asp-action="CreateEditKategorie">bearbeiten</a></td>
+                        <td><button onclick="onClickedDeleteButton(@kategorien.Id)" class="btn btn-danger">löschen</button></td>
                     </tr>
                 }
             }
         </tbody>
     </table>
 </div>
+
+@section Scripts{
+    <script>
+
+        function onClickedDeleteButton(id) {
+            Swal.fire({
+                title: 'Möchtest du den Eintrag wirklich löschen? Achtung: Wenn die Kategorie Artikel hat werden diese und alles was diese Artikel beinhaltet ebenfalls gelöscht!',
+                icon: 'error',
+
+                showCloseButton: true,
+                focusConfirm: false,
+                confirmButtonText:
+                    'Ja, löschen!',
+            }).then((result) => {
+
+                if (result.isConfirmed) {
+
+                    $.ajax({
+                        type: "POST",
+                        url: "@Url.Action("DeleteById")",
+                        data: { id: id },
+                        success: function (msg) {
+
+                            Swal.fire('Eintrag wurde gelöscht!', '', 'success').then((result) => {
+                                location.reload();
+                            });
+                        },
+                        error: function (msg) {
+                            Swal.fire('UPS!', '', 'error')
+                        }
+                    });
+
+
+                }
+            })
+        }
+    </script>
+}

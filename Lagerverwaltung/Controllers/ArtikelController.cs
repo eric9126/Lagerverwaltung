@@ -94,5 +94,26 @@ namespace Lagerverwaltung.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpPost]
+        public IActionResult DeleteById(int id)
+        {
+            if (id == 0)
+            {
+                return BadRequest();
+            }
+
+            var artikelFromDB = _context.Artikel.SingleOrDefault(x => x.Id == id);
+
+            if (artikelFromDB == null)
+            {
+                return NotFound();
+            }
+
+            _context.Artikel.Remove(artikelFromDB);
+            _context.SaveChanges();
+
+            return Ok();
+        }
+
     }
 }

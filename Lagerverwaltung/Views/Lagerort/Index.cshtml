@@ -14,6 +14,8 @@
                 <th>Lagerort Nr.</th>
                 <th>Bezeichnung</th>
                 <th>Ort</th>
+                <th>Bearbeiten</th>
+                <th>Löschen</th>
             </tr>
         </thead>
         <tbody>
@@ -25,9 +27,48 @@
                         <td>@lagerorte.Bezeichnung</td>
                         <td>@lagerorte.Ort</td>
                         <td><a asp-route-id="@lagerorte.Id" class="btn btn-warning" asp-controller="Lagerort" asp-action="CreateEditLagerort">bearbeiten</a></td>
+                        <td><button onclick="onClickedDeleteButton(@lagerorte.Id)" class="btn btn-danger">löschen</button></td>
                     </tr>
                 }
             }
         </tbody>
     </table>
 </div>
+
+@section Scripts{
+    <script>
+
+        function onClickedDeleteButton(id) {
+            Swal.fire({
+                title: 'Möchtest du den Eintrag wirklich löschen? Achtung: Wenn der Lagerort Lagerplätze hat werden diese ebenfalls gelöscht!',
+                icon: 'error',
+
+                showCloseButton: true,
+                focusConfirm: false,
+                confirmButtonText:
+                    'Ja, löschen!',
+            }).then((result) => {
+
+                if (result.isConfirmed) {
+
+                    $.ajax({
+                        type: "POST",
+                        url: "@Url.Action("DeleteById")",
+                        data: { id: id },
+                        success: function (msg) {
+
+                            Swal.fire('Eintrag wurde gelöscht!', '', 'success').then((result) => {
+                                location.reload();
+                            });
+                        },
+                        error: function (msg) {
+                            Swal.fire('UPS!', '', 'error')
+                        }
+                    });
+
+
+                }
+            })
+        }
+    </script>
+}
