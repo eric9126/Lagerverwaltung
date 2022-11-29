@@ -1,0 +1,50 @@
+﻿@{
+    ViewData["Title"] = "Waren Ein- / Ausgang";
+}
+
+<div class="text-center">
+    <h1>Waren Ein- / Ausgang</h1>
+</div>
+
+<div class="container">
+    <table id="LagerplatzTable" class="table table-bordered table-striped table-hover bg-light stripe">
+        <thead>
+            <tr>
+                <th>Lagerplatz Nr.</th>
+                <th>Bezeichnung</th>
+                <th>Lagerort ID</th>
+                <th>Artikel ID</th>
+                <th>Artikel Name</th>
+                <th>Soll-Bestand</th>
+                <th>Ist-Bestand</th>
+                <th>Bemerkungen</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                foreach (Lagerplatz Lagerplatze in Model.Lagerplatz)
+                {
+                    <tr>
+                        <td>@Lagerplatze.Id</td>
+                        <td>@Lagerplatze.Bezeichnung</td>
+                        <td>@Lagerplatze.LagerortID</td>
+                        <td>@Lagerplatze.ArtikelID</td>
+
+                        @foreach (Artikel artikel in Model.Artikel)
+                        {
+                            if (artikel.Id == Lagerplatze.ArtikelID)
+                            {
+                                <td>@artikel.Name</td>
+                            }
+                        }
+
+                        <td>@Lagerplatze.Soll</td>
+                        <td>@Lagerplatze.Ist</td>
+                        <td>@Lagerplatze.Bemerkungen</td>
+                        <td><a asp-route-id="@Lagerplatze.Id" class="btn btn-warning" asp-controller="WarenEinAusgang" asp-action="Buchen">Waren -eingang / -ausgang</a></td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
