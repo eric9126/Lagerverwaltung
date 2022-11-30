@@ -1,7 +1,10 @@
-﻿using Lagerverwaltung.Models;
+﻿using CsvHelper;
+using CsvHelper.Configuration;
+using Lagerverwaltung.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using System.Dynamic;
+using System.Globalization;
 
 namespace Lagerverwaltung.Controllers
 {
@@ -182,6 +185,27 @@ namespace Lagerverwaltung.Controllers
 
         public IActionResult BackToAuftrag()
         {
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult ExportToCSV()
+        {
+            string strFilePath = @"C:\\csv\auftraege.csv";
+
+            var FromDB = _context.Auftrag.ToList();
+
+            var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+            {
+                HasHeaderRecord = true,
+                Delimiter = ";"
+            };
+
+            using (var writer = new StreamWriter(strFilePath))
+            using (var csv = new CsvWriter(writer, config))
+            {
+                csv.WriteRecords(FromDB);
+            }
+
             return RedirectToAction("Index");
         }
 

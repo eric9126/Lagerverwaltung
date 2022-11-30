@@ -1,9 +1,17 @@
 ﻿using CsvHelper;
+using CsvHelper.Configuration;
+using Lagerverwaltung.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.VisualBasic.FileIO;
+using System;
+using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Dynamic;
 using System.Formats.Asn1;
 using System.Globalization;
+using System.IO;
 using System.Text;
 
 namespace Lagerverwaltung.Controllers
@@ -79,16 +87,51 @@ namespace Lagerverwaltung.Controllers
             return RedirectToAction("Index");
         }
 
-        public IActionResult ArtikelToCSV()
+        public IActionResult ExportToCSV()
         {
             string strFilePath = @"C:\\csv\artikel.csv";
 
-            var ArtikelFromDB = _context.Artikel.ToList();
+            var FromDB = _context.Artikel.ToList();
+
+            var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+            {
+                HasHeaderRecord = true,
+                Delimiter = ";"
+            };
 
             using (var writer = new StreamWriter(strFilePath))
-            using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+            using (var csv = new CsvWriter(writer, config))
             {
-                csv.WriteRecords(ArtikelFromDB);
+                
+                csv.WriteRecords(FromDB);
+            }            
+
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult ImportFromCSV()
+        {
+            string strFilePath = @"C:\\csv\artikel.csv";
+            List<Artikel> artikelListe = new();
+
+            var configuration = new CsvConfiguration(CultureInfo.InvariantCulture)
+            {
+                HasHeaderRecord = true,
+                Delimiter = ";"
+            };
+            using (var reader = new StreamReader(strFilePath))
+            using (var csv = new CsvReader(reader, configuration))
+            {
+                var records = csv.GetRecords<Artikel>().ToList();
+
+                foreach (Artikel artikelSchleife in records)
+                {
+                    artikelListe.Add(new Artikel() { Name = artikelSchleife.Name, KategorieID = artikelSchleife.KategorieID, Beschreibung = artikelSchleife.Beschreibung });
+
+                }
+                _context.Artikel.AddRange(artikelListe);
+                _context.SaveChanges();
+
             }            
 
             return RedirectToAction("Index");

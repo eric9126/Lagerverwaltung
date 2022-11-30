@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using CsvHelper;
+using CsvHelper.Configuration;
+using Microsoft.AspNetCore.Mvc;
+using System.Globalization;
 
 namespace Lagerverwaltung.Controllers
 {
@@ -65,6 +68,26 @@ namespace Lagerverwaltung.Controllers
 
         public IActionResult BackToLagerort()
         {
+            return RedirectToAction("Index");
+        }
+        public IActionResult ExportToCSV()
+        {
+            string strFilePath = @"C:\\csv\lagerorte.csv";
+
+            var FromDB = _context.Lagerort.ToList();
+
+            var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+            {
+                HasHeaderRecord = true,
+                Delimiter = ";"
+            };
+
+            using (var writer = new StreamWriter(strFilePath))
+            using (var csv = new CsvWriter(writer, config))
+            {
+                csv.WriteRecords(FromDB);
+            }
+
             return RedirectToAction("Index");
         }
 
