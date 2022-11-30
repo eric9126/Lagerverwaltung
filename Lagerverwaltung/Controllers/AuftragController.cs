@@ -209,6 +209,34 @@ namespace Lagerverwaltung.Controllers
             return RedirectToAction("Index");
         }
 
+        public IActionResult ImportFromCSV()
+        {
+            string strFilePath = @"C:\\csv\auftraege.csv";
+            List<Auftrag> auftragsListe = new();
+
+            var configuration = new CsvConfiguration(CultureInfo.InvariantCulture)
+            {
+                HasHeaderRecord = true,
+                Delimiter = ";"
+            };
+            using (var reader = new StreamReader(strFilePath))
+            using (var csv = new CsvReader(reader, configuration))
+            {
+                var records = csv.GetRecords<Auftrag>().ToList();
+
+                foreach (Auftrag auftragsSchleife in records)
+                {
+                    auftragsListe.Add(new Auftrag() { KundeID = auftragsSchleife.KundeID, Bemerkungen = auftragsSchleife.Bemerkungen, Gebucht = auftragsSchleife.Gebucht });
+
+                }
+                _context.Auftrag.AddRange(auftragsListe);
+                _context.SaveChanges();
+
+            }
+
+            return RedirectToAction("Index");
+        }
+
         [HttpPost]
         public IActionResult DeleteById(int id)
         {

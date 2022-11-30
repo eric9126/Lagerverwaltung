@@ -1,5 +1,6 @@
 ﻿using CsvHelper;
 using CsvHelper.Configuration;
+using Lagerverwaltung.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Dynamic;
 using System.Globalization;
@@ -96,6 +97,34 @@ namespace Lagerverwaltung.Controllers
             using (var csv = new CsvWriter(writer, config))
             {
                 csv.WriteRecords(FromDB);
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult ImportFromCSV()
+        {
+            string strFilePath = @"C:\\csv\artikelpositionen.csv";
+            List<Positionen> artikelpositionenListe = new();
+
+            var configuration = new CsvConfiguration(CultureInfo.InvariantCulture)
+            {
+                HasHeaderRecord = true,
+                Delimiter = ";"
+            };
+            using (var reader = new StreamReader(strFilePath))
+            using (var csv = new CsvReader(reader, configuration))
+            {
+                var records = csv.GetRecords<Positionen>().ToList();
+
+                foreach (Positionen artikelpositionenSchleife in records)
+                {
+                    artikelpositionenListe.Add(new Positionen() { AuftragsID = artikelpositionenSchleife.AuftragsID, PositionsNummer = artikelpositionenSchleife.PositionsNummer, ArtikelID = artikelpositionenSchleife.ArtikelID, Menge = artikelpositionenSchleife.Menge, LagerplatzID = artikelpositionenSchleife.LagerplatzID, Bemerkungen = artikelpositionenSchleife.Bemerkungen });
+
+                }
+                _context.Position.AddRange(artikelpositionenListe);
+                _context.SaveChanges();
+
             }
 
             return RedirectToAction("Index");

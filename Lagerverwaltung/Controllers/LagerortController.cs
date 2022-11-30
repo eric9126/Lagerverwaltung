@@ -1,5 +1,6 @@
 ﻿using CsvHelper;
 using CsvHelper.Configuration;
+using Lagerverwaltung.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Globalization;
 
@@ -86,6 +87,34 @@ namespace Lagerverwaltung.Controllers
             using (var csv = new CsvWriter(writer, config))
             {
                 csv.WriteRecords(FromDB);
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult ImportFromCSV()
+        {
+            string strFilePath = @"C:\\csv\lagerorte.csv";
+            List<Lagerort> lagerortListe = new();
+
+            var configuration = new CsvConfiguration(CultureInfo.InvariantCulture)
+            {
+                HasHeaderRecord = true,
+                Delimiter = ";"
+            };
+            using (var reader = new StreamReader(strFilePath))
+            using (var csv = new CsvReader(reader, configuration))
+            {
+                var records = csv.GetRecords<Lagerort>().ToList();
+
+                foreach (Lagerort lagerortSchleife in records)
+                {
+                    lagerortListe.Add(new Lagerort() { Bezeichnung = lagerortSchleife.Bezeichnung, Ort = lagerortSchleife.Ort });
+
+                }
+                _context.Lagerort.AddRange(lagerortListe);
+                _context.SaveChanges();
+
             }
 
             return RedirectToAction("Index");

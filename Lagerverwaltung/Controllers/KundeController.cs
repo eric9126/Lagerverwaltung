@@ -1,5 +1,6 @@
 ﻿using CsvHelper;
 using CsvHelper.Configuration;
+using Lagerverwaltung.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Globalization;
 
@@ -93,6 +94,34 @@ namespace Lagerverwaltung.Controllers
             using (var csv = new CsvWriter(writer, config))
             {
                 csv.WriteRecords(FromDB);
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult ImportFromCSV()
+        {
+            string strFilePath = @"C:\\csv\kunden.csv";
+            List<Kunde> kundenListe = new();
+
+            var configuration = new CsvConfiguration(CultureInfo.InvariantCulture)
+            {
+                HasHeaderRecord = true,
+                Delimiter = ";"
+            };
+            using (var reader = new StreamReader(strFilePath))
+            using (var csv = new CsvReader(reader, configuration))
+            {
+                var records = csv.GetRecords<Kunde>().ToList();
+
+                foreach (Kunde kundenSchleife in records)
+                {
+                    kundenListe.Add(new Kunde() { Vorname = kundenSchleife.Vorname ,Name = kundenSchleife.Name, Firma = kundenSchleife.Firma, Strasse = kundenSchleife.Strasse, PLZ = kundenSchleife.PLZ, Telefon = kundenSchleife.Telefon, Ansprechpartner = kundenSchleife.Ansprechpartner, Bemerkungen = kundenSchleife.Bemerkungen });
+
+                }
+                _context.Kunde.AddRange(kundenListe);
+                _context.SaveChanges();
+
             }
 
             return RedirectToAction("Index");
