@@ -62,6 +62,7 @@ namespace Lagerverwaltung.Controllers
                 KundeFromDB.Firma = Kunde.Firma;
                 KundeFromDB.Strasse = Kunde.Strasse;
                 KundeFromDB.PLZ = Kunde.PLZ;
+                KundeFromDB.Ort = Kunde.Ort;
                 KundeFromDB.Telefon = Kunde.Telefon;
                 KundeFromDB.Ansprechpartner = Kunde.Ansprechpartner;
                 KundeFromDB.Bemerkungen = Kunde.Bemerkungen;
@@ -116,7 +117,7 @@ namespace Lagerverwaltung.Controllers
 
                 foreach (Kunde kundenSchleife in records)
                 {
-                    kundenListe.Add(new Kunde() { Vorname = kundenSchleife.Vorname ,Name = kundenSchleife.Name, Firma = kundenSchleife.Firma, Strasse = kundenSchleife.Strasse, PLZ = kundenSchleife.PLZ, Telefon = kundenSchleife.Telefon, Ansprechpartner = kundenSchleife.Ansprechpartner, Bemerkungen = kundenSchleife.Bemerkungen });
+                    kundenListe.Add(new Kunde() { Vorname = kundenSchleife.Vorname ,Name = kundenSchleife.Name, Firma = kundenSchleife.Firma, Strasse = kundenSchleife.Strasse, PLZ = kundenSchleife.PLZ, Ort = kundenSchleife.Ort, Telefon = kundenSchleife.Telefon, Ansprechpartner = kundenSchleife.Ansprechpartner, Bemerkungen = kundenSchleife.Bemerkungen });
 
                 }
                 _context.Kunde.AddRange(kundenListe);

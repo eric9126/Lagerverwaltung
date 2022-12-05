@@ -11,6 +11,7 @@ namespace Lagerverwaltung.Models
         public string Firma { get; set; }
         public string Strasse { get; set; }
         public string PLZ { get; set; }
+        public string Ort { get; set; }
         public string? Telefon { get; set; }
         public string? Ansprechpartner { get; set; }
         public string? Bemerkungen { get; set; }
