@@ -21,6 +21,8 @@
                 <th>Artikel Name</th>
                 <th>Menge</th>
                 <th>Lagerplatz</th>
+                <th>Seriennummer</th>
+                <th>MAC-Adresse</th>
                 <th>Bemerkungen</th>
                 <th>Bearbeiten</th>
                 <th>Löschen</th>
@@ -63,6 +65,8 @@
                             }
                         }
 
+                        <td>@Position.SerienNummer</td>
+                        <td>@Position.MACAdresse</td>
                         <td>@Position.Bemerkungen</td>
                         <td><a asp-route-id="@Position.Id" class="btn btn-warning" asp-controller="Position" asp-action="CreateEditPosition">bearbeiten</a></td>
                         <td><button onclick="onClickedDeleteButton(@Position.Id)" class="btn btn-danger">löschen</button></td>

@@ -68,6 +68,8 @@ namespace Lagerverwaltung.Controllers
                 PositionFromDB.ArtikelID = Position.ArtikelID;
                 PositionFromDB.Menge = Position.Menge;
                 PositionFromDB.LagerplatzID = Position.LagerplatzID;
+                PositionFromDB.SerienNummer = Position.SerienNummer;
+                PositionFromDB.MACAdresse = Position.MACAdresse;
                 PositionFromDB.Bemerkungen = Position.Bemerkungen;
 
             }
@@ -119,7 +121,7 @@ namespace Lagerverwaltung.Controllers
 
                 foreach (Positionen artikelpositionenSchleife in records)
                 {
-                    artikelpositionenListe.Add(new Positionen() { AuftragsID = artikelpositionenSchleife.AuftragsID, PositionsNummer = artikelpositionenSchleife.PositionsNummer, ArtikelID = artikelpositionenSchleife.ArtikelID, Menge = artikelpositionenSchleife.Menge, LagerplatzID = artikelpositionenSchleife.LagerplatzID, Bemerkungen = artikelpositionenSchleife.Bemerkungen });
+                    artikelpositionenListe.Add(new Positionen() { AuftragsID = artikelpositionenSchleife.AuftragsID, PositionsNummer = artikelpositionenSchleife.PositionsNummer, ArtikelID = artikelpositionenSchleife.ArtikelID, Menge = artikelpositionenSchleife.Menge, LagerplatzID = artikelpositionenSchleife.LagerplatzID, SerienNummer = artikelpositionenSchleife.SerienNummer, MACAdresse =artikelpositionenSchleife.MACAdresse, Bemerkungen = artikelpositionenSchleife.Bemerkungen });
 
                 }
                 _context.Position.AddRange(artikelpositionenListe);

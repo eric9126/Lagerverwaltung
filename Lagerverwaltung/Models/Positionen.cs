@@ -20,6 +20,8 @@ namespace Lagerverwaltung.Models
 
         public int Menge { get; set; }      
         public int LagerplatzID { get; set; }
+        public string? SerienNummer { get; set; }
+        public string? MACAdresse { get; set; }
         public string? Bemerkungen { get; set; }
 
     }

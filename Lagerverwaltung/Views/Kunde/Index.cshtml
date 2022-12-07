@@ -1,15 +1,17 @@
 ﻿@{
-    ViewData["Title"] = "Kunde";
+    ViewData["Title"] = "Kunden";
 }
 
 <div class="text-center">
-    <h1>Kunde</h1>
+    <h1>Kunden</h1>
 </div>
 
-<div class="container">
-    <a class="btn btn-primary" asp-controller="Kunde" asp-action="CreateEditKunde">neuen Kunden anlegen</a>
-    <a class="btn btn-primary" asp-controller="Kunde" asp-action="ExportToCSV">Kunden exportieren</a>
-    <a class="btn btn-primary" asp-controller="Kunde" asp-action="ImportFromCSV">Kunden importieren</a>
+<div class="container-fluid">
+    <p>
+        <a class="btn btn-primary" asp-controller="Kunde" asp-action="CreateEditKunde">neuen Kunden anlegen</a>
+        <a class="btn btn-primary" asp-controller="Kunde" asp-action="ExportToCSV">Kunden exportieren</a>
+        <a class="btn btn-primary" asp-controller="Kunde" asp-action="ImportFromCSV">Kunden importieren</a>
+    </p>
     <table id="KundeTable" class="table table-bordered table-striped table-hover bg-light stripe">
         <thead>
             <tr>
@@ -53,6 +55,13 @@
 
 @section Scripts{
     <script>
+        $(document).ready(function () {
+            $('#KundeTable').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/German.json"
+                }
+            });
+        });
 
         function onClickedDeleteButton(id) {
             Swal.fire({
