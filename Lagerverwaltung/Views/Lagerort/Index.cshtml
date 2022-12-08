@@ -7,9 +7,11 @@
 </div>
 
 <div class="container">
-    <a class="btn btn-primary" asp-controller="Lagerort" asp-action="CreateEditLagerort">neuen Lagerort anlegen</a>
-    <a class="btn btn-primary" asp-controller="Lagerort" asp-action="ExportToCSV">Lagerorte exportieren</a>
-    <a class="btn btn-primary" asp-controller="Lagerort" asp-action="ImportFromCSV">Lagerorte importieren</a>
+    <p>
+        <a class="btn btn-primary" asp-controller="Lagerort" asp-action="CreateEditLagerort">neuen Lagerort anlegen</a>
+        <a class="btn btn-primary" asp-controller="Lagerort" asp-action="ExportToCSV">Lagerorte exportieren</a>
+        <a class="btn btn-primary" asp-controller="Lagerort" asp-action="ImportFromCSV">Lagerorte importieren</a>
+    </p>
     <table id="LagerortTable" class="table table-bordered table-striped table-hover bg-light stripe">
         <thead>
             <tr>
@@ -39,6 +41,22 @@
 
 @section Scripts{
     <script>
+        $(document).ready(function () {
+            $('#LagerortTable').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/German.json"
+                },
+                buttons: [
+                    {
+                        extend: 'searchBuilder',
+                        config: {
+                            depthLimit: 2
+                        }
+                    }
+                ],
+                dom: 'Bfrtip',
+            });
+        });
 
         function onClickedDeleteButton(id) {
             Swal.fire({

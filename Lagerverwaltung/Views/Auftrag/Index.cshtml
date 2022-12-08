@@ -6,10 +6,12 @@
     <h1>Aufträge</h1>
 </div>
 
-<div class="container">
-    <a class="btn btn-primary" asp-controller="Auftrag" asp-action="CreateEditAuftrag">neuen Auftrag anlegen</a>
-    <a class="btn btn-primary" asp-controller="Auftrag" asp-action="ExportToCSV">Aufträge exportieren</a>
-    <a class="btn btn-primary" asp-controller="Auftrag" asp-action="ImportFromCSV">Aufträge importieren</a>
+<div class="container-fluid">
+    <p>
+        <a class="btn btn-primary" asp-controller="Auftrag" asp-action="CreateEditAuftrag">neuen Auftrag anlegen</a>
+        <a class="btn btn-primary" asp-controller="Auftrag" asp-action="ExportToCSV">Aufträge exportieren</a>
+        <a class="btn btn-primary" asp-controller="Auftrag" asp-action="ImportFromCSV">Aufträge importieren</a>
+    </p>
     <table id="AuftragTable" class="table table-bordered table-striped table-hover bg-light stripe">
         <thead>
             <tr>
@@ -65,6 +67,22 @@
 
 @section Scripts{
     <script>
+        $(document).ready(function () {
+            $('#AuftragTable').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/German.json"
+                },
+                buttons: [
+                    {
+                        extend: 'searchBuilder',
+                        config: {
+                            depthLimit: 2
+                        }
+                    }
+                ],
+                dom: 'Bfrtip',
+            });
+        });
 
         function onClickedDeleteButton(id) {
             Swal.fire({

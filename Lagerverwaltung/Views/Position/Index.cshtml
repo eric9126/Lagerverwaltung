@@ -1,15 +1,17 @@
 ﻿@{
-    ViewData["Title"] = "Positionen";
+    ViewData["Title"] = "Auftragspositionen";
 }
 
 <div class="text-center">
-    <h1>Positionen</h1>
+    <h1>Auftragspositionen</h1>
 </div>
 
-<div class="container">
-    <a class="btn btn-primary" asp-controller="Position" asp-action="CreateEditPosition">neue Position anlegen</a>
-    <a class="btn btn-primary" asp-controller="Position" asp-action="ExportToCSV">Artikelpositionen exportieren</a>
-    <a class="btn btn-primary" asp-controller="Position" asp-action="ImportFromCSV">Artikelpositionen importieren</a>
+<div class="container-fluid">
+    <p>
+        <a class="btn btn-primary" asp-controller="Position" asp-action="CreateEditPosition">neue Position anlegen</a>
+        <a class="btn btn-primary" asp-controller="Position" asp-action="ExportToCSV">Artikelpositionen exportieren</a>
+        <a class="btn btn-primary" asp-controller="Position" asp-action="ImportFromCSV">Artikelpositionen importieren</a>
+    </p>
     <table id="PositionTable" class="table table-bordered table-striped table-hover bg-light stripe">
         <thead>
             <tr>
@@ -79,6 +81,22 @@
 
 @section Scripts{
     <script>
+        $(document).ready(function () {
+            $('#PositionTable').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/German.json"
+                },                
+                buttons: [
+                    {
+                        extend: 'searchBuilder',
+                        config: {
+                            depthLimit: 2
+                        }
+                    }
+                ],
+                dom: 'Bfrtip',
+            });
+        });
 
         function onClickedDeleteButton(id) {
             Swal.fire({
