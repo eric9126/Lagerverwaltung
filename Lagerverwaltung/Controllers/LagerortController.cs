@@ -73,7 +73,7 @@ namespace Lagerverwaltung.Controllers
         }
         public IActionResult ExportToCSV()
         {
-            string strFilePath = @"C:\\csv\lagerorte.csv";
+            string strFilePath = @"E:\\csv\lagerorte.csv";
 
             var FromDB = _context.Lagerort.ToList();
 
@@ -94,7 +94,7 @@ namespace Lagerverwaltung.Controllers
 
         public IActionResult ImportFromCSV()
         {
-            string strFilePath = @"C:\\csv\lagerorte.csv";
+            string strFilePath = @"E:\\csv\lagerorte.csv";
             List<Lagerort> lagerortListe = new();
 
             var configuration = new CsvConfiguration(CultureInfo.InvariantCulture)
