@@ -7,13 +7,13 @@ using System.Linq.Expressions;
 
 namespace Lagerverwaltung.Controllers
 {
-    [Route("api/Kunden")]
+    [Route("api/Artikel")]
     [ApiController]
     [ApiKeyAuthorization]
-    public class APIKundenController : ControllerBase
+    public class APIArtikelController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
-        public APIKundenController(ApplicationDbContext context)
+        public APIArtikelController(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -22,7 +22,7 @@ namespace Lagerverwaltung.Controllers
         [HttpGet("GetAll")]
         public IActionResult GetAll()
         {
-            var all = _context.Kunde.ToArray();
+            var all = _context.Artikel.ToArray();
             return Ok(all);
         }
 
@@ -30,7 +30,7 @@ namespace Lagerverwaltung.Controllers
         public IActionResult GetById(int id) 
         { 
         
-            var byId = _context.Kunde.SingleOrDefault(x => x.Id == id);
+            var byId = _context.Artikel.SingleOrDefault(x => x.Id == id);
 
             if(byId == null)
             {
@@ -42,16 +42,16 @@ namespace Lagerverwaltung.Controllers
         }
 
         [HttpPost("Create")]
-        public IActionResult Create(Kunde kunde)
+        public IActionResult Create(Artikel Artikel)
         {
-            if (kunde.Id != 0)
+            if (Artikel.Id != 0)
             {
                 return BadRequest();
             }
 
             try
             {
-                _context.Kunde.Add(kunde);
+                _context.Artikel.Add(Artikel);
                 _context.SaveChanges();
                 return Ok();
             }
@@ -64,30 +64,30 @@ namespace Lagerverwaltung.Controllers
         [HttpDelete("Delete")]
         public IActionResult Delete(int id)
         {
-            var byId = _context.Kunde.SingleOrDefault(x => x.Id == id);
+            var byId = _context.Artikel.SingleOrDefault(x => x.Id == id);
 
             if (byId == null)
             {
                 return NotFound();
             }
 
-            _context.Kunde.Remove(byId);
+            _context.Artikel.Remove(byId);
             _context.SaveChanges();
 
             return Ok("Objekt wurde gelöscht!");
         }
 
         [HttpPut("Update")]
-        public IActionResult Update(Kunde kunde)
+        public IActionResult Update(Artikel Artikel)
         {
-            if (kunde.Id == 0)
+            if (Artikel.Id == 0)
             {
                 return BadRequest();
             }
 
             try
             {
-                _context.Kunde.Update(kunde);
+                _context.Artikel.Update(Artikel);
                 _context.SaveChanges();
                 return Ok("Die Änderungen wurden gespeichert.");
             }

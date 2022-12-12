@@ -11,7 +11,7 @@ namespace Lagerverwaltung.Models
 
         [ForeignKey("Kategorie")]
         public int KategorieID { get; set; }
-        public virtual Kategorien Kategorie { get; set; }
+        public virtual Kategorien? Kategorie { get; set; }
 
 
         public string? Beschreibung { get; set; }

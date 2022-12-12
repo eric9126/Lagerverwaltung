@@ -11,11 +11,11 @@ namespace Lagerverwaltung.Models
 
         [ForeignKey("Lagerort")]
         public int LagerortID { get; set; }
-        public virtual Lagerort Lagerort { get; set; }
+        public virtual Lagerort? Lagerort { get; set; }
 
         [ForeignKey("Artikel")]
         public int ArtikelID { get; set; }
-        public virtual Artikel Artikel { get; set; }
+        public virtual Artikel? Artikel { get; set; }
 
         public int Soll {  get; set; }
         public int Ist { get; set; }

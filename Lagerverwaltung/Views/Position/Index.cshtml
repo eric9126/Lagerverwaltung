@@ -9,8 +9,8 @@
 <div class="container-fluid">
     <p>
         <a class="btn btn-primary" asp-controller="Position" asp-action="CreateEditPosition">neue Position anlegen</a>
-        <a class="btn btn-primary" asp-controller="Position" asp-action="ExportToCSV">Artikelpositionen exportieren</a>
-        <a class="btn btn-primary" asp-controller="Position" asp-action="ImportFromCSV">Artikelpositionen importieren</a>
+        <a class="btn btn-primary" asp-controller="Position" asp-action="ExportToCSV">Auftragspositionen exportieren</a>
+        <a class="btn btn-primary" asp-controller="Position" asp-action="ImportFromCSV">Auftragspositionen importieren</a>
     </p>
     <table id="PositionTable" class="table table-bordered table-striped table-hover bg-light stripe">
         <thead>
@@ -70,8 +70,24 @@
                         <td>@Position.SerienNummer</td>
                         <td>@Position.MACAdresse</td>
                         <td>@Position.Bemerkungen</td>
-                        <td><a asp-route-id="@Position.Id" class="btn btn-warning" asp-controller="Position" asp-action="CreateEditPosition">bearbeiten</a></td>
-                        <td><button onclick="onClickedDeleteButton(@Position.Id)" class="btn btn-danger">löschen</button></td>
+
+                        @foreach (Auftrag auftrag in Model.Auftrag)
+                        {
+                            if (auftrag.Id == Position.AuftragsID)
+                            {
+                                if (auftrag.Gebucht == false)
+                                {
+                                    <td><a asp-route-id="@Position.Id" class="btn btn-warning" asp-controller="Position" asp-action="CreateEditPosition">bearbeiten</a></td>
+                                    <td><button onclick="onClickedDeleteButton(@Position.Id)" class="btn btn-danger">löschen</button></td>
+                                }
+                                else
+                                {
+                                    <td class="text-danger">bearbeiten gesperrt!</td>
+                                    <td class="text-danger">löschen gesperrt!</td>
+                                }
+                            }
+                        }                        
+                        
                     </tr>
                 }
             }
