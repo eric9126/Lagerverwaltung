@@ -36,10 +36,12 @@ namespace Lagerverwaltung.Controllers
             if (id != 0)
             {
                 var AuftragFromDB = _context.Auftrag.SingleOrDefault(x => x.Id == id);
+                var KundeFromDB = _context.Kunde.SingleOrDefault(x => x.Id == AuftragFromDB.KundeID);
+                var model = (AuftragFromDB, KundeFromDB);
 
                 if (AuftragFromDB != null)
                 {
-                    return View(AuftragFromDB);
+                    return View(model);
                 }
                 else
                 {
@@ -50,7 +52,7 @@ namespace Lagerverwaltung.Controllers
         }
 
         //Controller der aufgerufen wird wenn der Speichern Button gedrückt wird
-        public IActionResult ExecuteCreateOrEditAuftrag(Models.Auftrag Auftrag)
+        public IActionResult ExecuteCreateOrEditAuftrag(Models.Auftrag Auftrag, Models.Kunde Kunde)
         {
 
             if (Auftrag.Id == 0)

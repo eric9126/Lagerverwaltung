@@ -1,4 +1,5 @@
-﻿@model Lagerverwaltung.Models.Auftrag
+﻿@using Lagerverwaltung.Models
+@model (Auftrag auftrag, Kunde kunde)
 
 @{
     ViewData["Title"] = "Auftrag erstellen oder bearbeiten";
@@ -12,16 +13,20 @@
 
         <div class="card-body">
 
-            <input hidden asp-for="Id"/>
+            <input asp-for="auftrag.Id" type="number"/>
 
             <div class="row">
                 <div class="col">
                     <label>Kunden-ID</label>
-                    <input class="form-control" asp-for="KundeID" type="number"/>
+                    <input class="form-control" asp-for="auftrag.KundeID" type="number"/>
+                </div>
+                <div class="col">
+                    <label>Kunde</label>
+                    <input class="form-control" asp-for="kunde.Firma" type="text" />
                 </div>
                 <div class="col">
                     <label>Bemerkungen</label>
-                    <input class="form-control" asp-for="Bemerkungen" type="text" />
+                    <input class="form-control" asp-for="auftrag.Bemerkungen" type="text" />
                 </div>
             </div>
 
