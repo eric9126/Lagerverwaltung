@@ -1,5 +1,5 @@
 ﻿@using Lagerverwaltung.Models
-@model (Auftrag auftrag, Kunde kunde)
+@model Lagerverwaltung.Models.Virtuell.AuftragVM
 
 @{
     ViewData["Title"] = "Auftrag erstellen oder bearbeiten";
@@ -13,17 +13,10 @@
 
         <div class="card-body">
 
-            <input asp-for="auftrag.Id" type="number"/>
+            <input asp-for="auftrag.Id" type="number" hidden/>
 
             <div class="row">
-                <div class="col">
-                    <label>Kunden-ID</label>
-                    <input class="form-control" asp-for="auftrag.KundeID" type="number"/>
-                </div>
-                <div class="col">
-                    <label>Kunde</label>
-                    <input class="form-control" asp-for="kunde.Firma" type="text" />
-                </div>
+                
                 <div class="col">
                     <label>Bemerkungen</label>
                     <input class="form-control" asp-for="auftrag.Bemerkungen" type="text" />
@@ -33,14 +26,8 @@
             <div class="row">
                 <div class="col">
                     <label>Kunde</label>
-                    <select class="form-select">
-
-                        @foreach (Kunde kunde in @ViewBag.Kunde)
-                        {
-                            <option>@kunde.Id | @kunde.Firma @kunde.Name @kunde.Vorname</option>
-                        }
-
-                    </select>
+                    <select class="form-select" asp-items="Model.selectKundenList" asp-for="auftrag.KundeID">
+                    </select> 
                 </div>
             </div>
             

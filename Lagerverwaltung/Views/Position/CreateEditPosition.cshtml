@@ -1,4 +1,4 @@
-﻿@model Lagerverwaltung.Models.Positionen
+﻿@model Lagerverwaltung.Models.Virtuell.PositionenVM
 
 @{
     ViewData["Title"] = "Position erstellen oder bearbeiten";
@@ -12,42 +12,45 @@
 
         <div class="card-body">
 
-            <input hidden asp-for="Id"/>
+            <input hidden asp-for="position.Id"/>
 
             <div class="row">
                 <div class="col">
                     <label>Auftrags-ID</label>
-                    <input class="form-control" asp-for="AuftragsID" type="number"/>
+                    <select class="form-select" asp-items="Model.selectAuftraegeList" asp-for="position.AuftragsID">
+                    </select>
                 </div>
                 <div class="col">
                     <label>Positions Nummer</label>
-                    <input class="form-control" asp-for="PositionsNummer" type="number"/>
+                    <input class="form-control" asp-for="position.PositionsNummer" type="number" />
                 </div>
                 <div class="col">
                     <label>Artikel ID</label>
-                    <input class="form-control" asp-for="ArtikelID" type="number" />
+                    <select class="form-select" asp-items="Model.selectArtikelList" asp-for="position.ArtikelID">
+                    </select>
                 </div>
             </div>
             <div class="row">
                 <div class="col">
                     <label>Menge</label>
-                    <input class="form-control" asp-for="Menge" type="number" />
+                    <input class="form-control" asp-for="position.Menge" type="number" />
                 </div>
                 <div class="col">
                     <label>Lagerplatz-ID</label>
-                    <input class="form-control" asp-for="LagerplatzID" type="number" />
+                    <select class="form-select" asp-items="Model.selectLagerplaetzeList" asp-for="position.LagerplatzID">
+                    </select>
                 </div>
                 <div class="col">
                     <label>Seriennummer</label>
-                    <input class="form-control" asp-for="SerienNummer" type="text" />
+                    <input class="form-control" asp-for="position.SerienNummer" type="text" />
                 </div>
                 <div class="col">
                     <label>MAC-Adresse</label>
-                    <input class="form-control" asp-for="MACAdresse" type="text" />
+                    <input class="form-control" asp-for="position.MACAdresse" type="text" />
                 </div>
                 <div class="col">
                     <label>Bemerkungen</label>
-                    <input class="form-control" asp-for="Bemerkungen" type="text" />
+                    <input class="form-control" asp-for="position.Bemerkungen" type="text" />
                 </div>
             </div>
             

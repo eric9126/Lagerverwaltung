@@ -1,7 +1,9 @@
 ﻿using CsvHelper;
 using CsvHelper.Configuration;
 using Lagerverwaltung.Models;
+using Lagerverwaltung.Models.Virtuell;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Dynamic;
 using System.Globalization;
 
@@ -29,20 +31,52 @@ namespace Lagerverwaltung.Controllers
         //Controller der Seite zum bearbeiten / hinzufügen
         public IActionResult CreateEditPosition(int id)
         {
+            var model = new PositionenVM
+            {
+                auftraege = _context.Auftrag.ToList(),
+                selectAuftraegeList = new List<SelectListItem>(),
+
+                artikel = _context.Artikel.ToList(),
+                selectArtikelList = new List<SelectListItem>(),
+
+                lagerplaetze = _context.Lagerplatz.ToList(),
+                selectLagerplaetzeList = new List<SelectListItem>()
+            };
+
+            foreach (var auftrag in _context.Auftrag)
+            {
+                string text = auftrag.Id + " | " + auftrag.Bemerkungen;
+                model.selectAuftraegeList.Add(new SelectListItem() { Text = text, Value = auftrag.Id.ToString() });
+            }
+
+            foreach (var artikel in _context.Artikel)
+            {
+                string text = artikel.Id + " | " + artikel.Name;
+                model.selectArtikelList.Add(new SelectListItem() { Text = text, Value = artikel.Id.ToString() });
+            }
+
+            foreach (var lagerplatz in _context.Lagerplatz)
+            {
+                string text = lagerplatz.Artikel.Name + " | " + lagerplatz.Id + " | " + lagerplatz.Bezeichnung;
+                model.selectLagerplaetzeList.Add(new SelectListItem() { Text = text, Value = lagerplatz.Id.ToString() });
+            }
+
             if (id != 0)
             {
                 var PositionFromDB = _context.Position.SingleOrDefault(x => x.Id == id);
 
+                model.position = PositionFromDB;
+
                 if (PositionFromDB != null)
                 {
-                    return View(PositionFromDB);
+                    return View(model);
                 }
                 else
                 {
                     return NotFound();
                 }
             }
-            return View();
+            return View(model);
         }
 
         //Controller der aufgerufen wird wenn der Speichern Button gedrückt wird

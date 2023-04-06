@@ -1,7 +1,9 @@
 ﻿using CsvHelper;
 using CsvHelper.Configuration;
 using Lagerverwaltung.Models;
+using Lagerverwaltung.Models.Virtuell;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Diagnostics;
 using System.Dynamic;
 using System.Globalization;
@@ -31,15 +33,29 @@ namespace Lagerverwaltung.Controllers
         //Controller der Seite zum bearbeiten / hinzufügen
         public IActionResult CreateEditAuftrag(int id)
         {
-            ViewBag.Kunde = _context.Kunde.ToList();
+            
+            var model = new AuftragVM
+            {
+                kunden = _context.Kunde.ToList(),
+                selectKundenList = new List<SelectListItem>() 
+            };
+
+            foreach (var kunde in _context.Kunde)
+            {
+                string text = kunde.Name + " | " + kunde.Firma;
+                model.selectKundenList.Add(new SelectListItem() { Text = text, Value = kunde.Id.ToString() });
+            }
 
             if (id != 0)
             {
                 var AuftragFromDB = _context.Auftrag.SingleOrDefault(x => x.Id == id);
                 var KundeFromDB = _context.Kunde.SingleOrDefault(x => x.Id == AuftragFromDB.KundeID);
-                var model = (AuftragFromDB, KundeFromDB);
 
-                if (AuftragFromDB != null)
+                model.auftrag = AuftragFromDB;
+                model.kunde = KundeFromDB;
+
+
+                if (model != null)
                 {
                     return View(model);
                 }
@@ -48,29 +64,29 @@ namespace Lagerverwaltung.Controllers
                     return NotFound();
                 }
             }
-            return View();
+            return View(model);
         }
 
         //Controller der aufgerufen wird wenn der Speichern Button gedrückt wird
-        public IActionResult ExecuteCreateOrEditAuftrag(Models.Auftrag Auftrag, Models.Kunde Kunde)
+        public IActionResult ExecuteCreateOrEditAuftrag(Models.Virtuell.AuftragVM auftragVM)
         {
 
-            if (Auftrag.Id == 0)
+            if (auftragVM.auftrag.Id == 0)
             {
 
-                _context.Auftrag.Add(Auftrag);
+                _context.Auftrag.Add(auftragVM.auftrag);
             }
             else
             {
-                var AuftragFromDB = _context.Auftrag.SingleOrDefault(x => x.Id == Auftrag.Id);
+                var AuftragFromDB = _context.Auftrag.SingleOrDefault(x => x.Id == auftragVM.auftrag.Id);
 
                 if (AuftragFromDB == null)
                 {
                     return NotFound();
                 }
 
-                AuftragFromDB.KundeID = Auftrag.KundeID;
-                AuftragFromDB.Bemerkungen = Auftrag.Bemerkungen;
+                AuftragFromDB.KundeID = auftragVM.auftrag.KundeID;
+                AuftragFromDB.Bemerkungen = auftragVM.auftrag.Bemerkungen;
 
             }
 
