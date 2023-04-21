@@ -1,21 +1,9 @@
 ﻿using CsvHelper;
 using CsvHelper.Configuration;
 using Lagerverwaltung.Models;
-using Microsoft.AspNetCore.Identity.UI.V4.Pages.Account.Manage.Internal;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.DotNet.Scaffolding.Shared.Messaging;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Microsoft.VisualBasic.FileIO;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Diagnostics;
 using System.Dynamic;
-using System.Formats.Asn1;
 using System.Globalization;
-using System.IO;
-using System.Linq.Expressions;
-using System.Text;
 
 namespace Lagerverwaltung.Controllers
 {
