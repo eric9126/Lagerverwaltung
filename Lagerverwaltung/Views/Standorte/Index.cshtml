@@ -1,0 +1,124 @@
+﻿@{
+    ViewData["Title"] = "Kunden-Standorte";
+}
+
+<div class="text-center">
+    <h1>Kunden-Standorte</h1>
+</div>
+
+<div class="container-fluid">
+    <p>
+        <a class="btn btn-primary" asp-controller="Standorte" asp-action="CreateEditStandort">neuen Standort anlegen</a>
+        <a class="btn btn-primary" asp-controller="Standorte" asp-action="ExportToCSV">Standorte exportieren</a>
+        <a class="btn btn-primary" asp-controller="Standorte" asp-action="ImportFromCSV">Standorte importieren</a>
+    </p>
+    <table id="StandortTable" class="table table-bordered table-striped table-hover bg-light stripe">
+        <thead>
+            <tr>
+                <th>Standort ID</th>
+                <th>Standort Nummer</th>
+                <th>Kunden ID</th>
+                <th>Kunde</th>
+                <th>PLZ</th>
+                <th>Ort</th>
+                <th>Land</th>
+                <th>Bundesland</th>
+                <th>Straße</th>
+                <th>Ansprechpartner</th>
+                <th>Telefon</th>
+                <th>Eintragungsdatum</th>
+                <th>Schließungsdatum</th>
+                <th>Standortbezeichnung</th>
+                <th>Bearbeiten</th>
+                <th>Löschen</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                foreach (Standort Standorte in Model.Standort)
+                {
+                    <tr>
+                        <td>@Standorte.Id</td>
+                        <td>@Standorte.StandortId</td>
+                        <td>@Standorte.KundeID</td>
+
+                        @foreach (Kunde kunde in Model.Kunde)
+                        {
+                            if (kunde.Id == Standorte.KundeID)
+                            {
+                                <td>@kunde.Firma</td>
+                            }
+                        }
+
+                        <td>@Standorte.PLZ</td>
+                        <td>@Standorte.Ort</td>
+                        <td>@Standorte.Land</td>
+                        <td>@Standorte.Bundesland</td>
+                        <td>@Standorte.Strasse</td>
+                        <td>@Standorte.Ansprechpartner</td>
+                        <td>@Standorte.Telefon</td>
+                        <td>@Standorte.Eintragungsdatum</td>
+                        <td>@Standorte.Schliessungsdatum</td>
+                        <td>@Standorte.Standortbezeichnung</td>
+                        <td><a asp-route-id="@Standorte.Id" class="btn btn-warning" asp-controller="Standorte" asp-action="CreateEditStandort">bearbeiten</a></td>
+                        <td><button onclick="onClickedDeleteButton(@Standorte.Id)" class="btn btn-danger">löschen</button></td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $('#StandortTable').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/German.json"
+                },
+                buttons: [
+                    {
+                        extend: 'searchBuilder',
+                        config: {
+                            depthLimit: 2
+                        }
+                    }
+                ],
+                dom: 'Bfrtip',
+            });
+        });
+
+        function onClickedDeleteButton(id) {
+            Swal.fire({
+                title: 'Möchtest du den Eintrag wirklich löschen? Achtung: Wenn der Auftrag Positionen hat werden diese ebenfalls gelöscht!',
+                icon: 'error',
+
+                showCloseButton: true,
+                focusConfirm: false,
+                confirmButtonText:
+                    'Ja, löschen!',
+            }).then((result) => {
+
+                if (result.isConfirmed) {
+
+                    $.ajax({
+                        type: "POST",
+                        url: "@Url.Action("DeleteById")",
+                        data: { id: id },
+                        success: function (msg) {
+
+                            Swal.fire('Eintrag wurde gelöscht!', '', 'success').then((result) => {
+                                location.reload();
+                            });
+                        },
+                        error: function (msg) {
+                            Swal.fire('UPS!', '', 'error')
+                        }
+                    });
+
+
+                }
+            })
+        }
+    </script>
+}

@@ -1,7 +1,9 @@
 ﻿using CsvHelper;
 using CsvHelper.Configuration;
 using Lagerverwaltung.Models;
+using Lagerverwaltung.Models.Virtuell;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Globalization;
 
 namespace Lagerverwaltung.Controllers
@@ -22,7 +24,8 @@ namespace Lagerverwaltung.Controllers
 
         //Controller der Seite zum bearbeiten / hinzufügen
         public IActionResult CreateEditLagerort(int id)
-        {
+        {            
+
             if (id != 0)
             {
                 var LagerortFromDB = _context.Lagerort.SingleOrDefault(x => x.Id == id);

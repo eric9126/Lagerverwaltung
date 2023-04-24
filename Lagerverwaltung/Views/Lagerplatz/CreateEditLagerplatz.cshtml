@@ -1,4 +1,5 @@
-﻿@model Lagerverwaltung.Models.Lagerplatz
+﻿@using Lagerverwaltung.Models
+@model Lagerverwaltung.Models.Virtuell.LagerplatzVM
 
 @{
     ViewData["Title"] = "Lagerplatz erstellen oder bearbeiten";
@@ -12,34 +13,40 @@
 
         <div class="card-body">
 
-            <input hidden asp-for="Id"/>
+            <input hidden asp-for="lagerplatz.Id" type="number"/>
 
             <div class="row">
                 <div class="col">
                     <label>Bezeichnung</label>
-                    <input class="form-control" asp-for="Bezeichnung" type="text"/>
+                    <input class="form-control" asp-for="lagerplatz.Bezeichnung" type="text"/>
                 </div>
-                <div class="col">
-                    <label>Lagerort ID</label>
-                    <input class="form-control" asp-for="LagerortID" type="number"/>
+                <div class="row">
+                    <div class="col">
+                        <label>Lagerort</label>
+                        <select class="form-select" asp-items="Model.selectLagerortList" asp-for="lagerplatz.LagerortID">
+                        </select>
+                    </div>
                 </div>
-                <div class="col">
-                    <label>Artikel ID</label>
-                    <input class="form-control" asp-for="ArtikelID" type="number" />
+                <div class="row">
+                    <div class="col">
+                        <label>Artikel</label>
+                        <select class="form-select" asp-items="Model.selectArtikelList" asp-for="lagerplatz.ArtikelID">
+                        </select>
+                    </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col">
                     <label>Soll-Bestand</label>
-                    <input class="form-control" asp-for="Soll" type="number" />
+                    <input class="form-control" asp-for="lagerplatz.Soll" type="number" />
                 </div>
                 <div class="col">
                     <label>Ist-Bestand</label>
-                    <input class="form-control" asp-for="Ist" type="number" />
+                    <input class="form-control" asp-for="lagerplatz.Ist" type="number" />
                 </div>
                 <div class="col">
                     <label>Bemerkungen (muss nicht ausgefüllt werden)</label>
-                    <input class="form-control" asp-for="Bemerkungen" type="text" />
+                    <input class="form-control" asp-for="lagerplatz.Bemerkungen" type="text" />
                 </div>
             </div>
             

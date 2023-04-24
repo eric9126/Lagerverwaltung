@@ -1,7 +1,9 @@
 ﻿using CsvHelper;
 using CsvHelper.Configuration;
 using Lagerverwaltung.Models;
+using Lagerverwaltung.Models.Virtuell;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.VisualBasic.FileIO;
 using System.Diagnostics;
 using System.Dynamic;
@@ -22,6 +24,7 @@ namespace Lagerverwaltung.Controllers
             dynamic mymodel = new ExpandoObject();
             mymodel.Lagerplatz = _context.Lagerplatz.ToList();
             mymodel.Artikel = _context.Artikel.ToList();
+            mymodel.Lagerort = _context.Lagerort.ToList();
 
             return View(mymodel);
         }
@@ -29,46 +32,73 @@ namespace Lagerverwaltung.Controllers
         //Controller der Seite zum bearbeiten / hinzufügen
         public IActionResult CreateEditLagerplatz(int id)
         {
+            var model = new LagerplatzVM
+            {
+                lagerorteList = _context.Lagerort.ToList(),
+                selectLagerortList = new List<SelectListItem>(),
+
+                artikelList = _context.Artikel.ToList(),
+                selectArtikelList = new List<SelectListItem>()
+            };
+
+            foreach (var lagerort in _context.Lagerort)
+            {
+                string text = lagerort.Bezeichnung + " | " + lagerort.Ort;
+                model.selectLagerortList.Add(new SelectListItem() { Text = text, Value = lagerort.Id.ToString() });
+            }
+
+            foreach (var artikel in _context.Artikel)
+            {
+                string text = artikel.Name + " | " + artikel.Beschreibung;
+                model.selectArtikelList.Add(new SelectListItem() { Text = text, Value = artikel.Id.ToString() });
+            }
+
             if (id != 0)
             {
                 var LagerplatzFromDB = _context.Lagerplatz.SingleOrDefault(x => x.Id == id);
+                var LagerortFromDB = _context.Lagerort.SingleOrDefault(x => x.Id == LagerplatzFromDB.LagerortID);
+                var ArtikelFromDB = _context.Artikel.SingleOrDefault(x => x.Id == LagerplatzFromDB.ArtikelID);
 
-                if (LagerplatzFromDB != null)
+                model.lagerplatz = LagerplatzFromDB;
+                model.lagerort = LagerortFromDB;
+                model.artikel = ArtikelFromDB;
+
+                if (model != null)
                 {
-                    return View(LagerplatzFromDB);
+                    return View(model);
                 }
                 else
                 {
                     return NotFound();
                 }
             }
-            return View();
+            return View(model);
         }
 
         //Controller der aufgerufen wird wenn der Speichern Button gedrückt wird
-        public IActionResult ExecuteCreateOrEditLagerplatz(Models.Lagerplatz Lagerplatz)
+        public IActionResult ExecuteCreateOrEditLagerplatz(Models.Virtuell.LagerplatzVM lagerplatzVM)
         {
 
-            if (Lagerplatz.Id == 0)
+            if (lagerplatzVM.lagerplatz.Id == 0)
             {
 
-                _context.Lagerplatz.Add(Lagerplatz);
+                _context.Lagerplatz.Add(lagerplatzVM.lagerplatz);
             }
             else
             {
-                var LagerplatzFromDB = _context.Lagerplatz.SingleOrDefault(x => x.Id == Lagerplatz.Id);
+                var LagerplatzFromDB = _context.Lagerplatz.SingleOrDefault(x => x.Id == lagerplatzVM.lagerplatz.Id);
 
                 if (LagerplatzFromDB == null)
                 {
                     return NotFound();
                 }
 
-                LagerplatzFromDB.Bezeichnung = Lagerplatz.Bezeichnung;
-                LagerplatzFromDB.LagerortID = Lagerplatz.LagerortID;
-                LagerplatzFromDB.ArtikelID = Lagerplatz.ArtikelID;
-                LagerplatzFromDB.Soll = Lagerplatz.Soll;
-                LagerplatzFromDB.Ist = Lagerplatz.Ist;
-                LagerplatzFromDB.Bemerkungen = Lagerplatz.Bemerkungen;
+                LagerplatzFromDB.Bezeichnung = lagerplatzVM.lagerplatz.Bezeichnung;
+                LagerplatzFromDB.LagerortID = lagerplatzVM.lagerplatz.LagerortID;
+                LagerplatzFromDB.ArtikelID = lagerplatzVM.lagerplatz.ArtikelID;
+                LagerplatzFromDB.Soll = lagerplatzVM.lagerplatz.Soll;
+                LagerplatzFromDB.Ist = lagerplatzVM.lagerplatz.Ist;
+                LagerplatzFromDB.Bemerkungen = lagerplatzVM.lagerplatz.Bemerkungen;
 
             }
 

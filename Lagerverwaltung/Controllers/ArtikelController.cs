@@ -1,7 +1,9 @@
 ﻿using CsvHelper;
 using CsvHelper.Configuration;
 using Lagerverwaltung.Models;
+using Lagerverwaltung.Models.Virtuell;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Dynamic;
 using System.Globalization;
 
@@ -28,43 +30,59 @@ namespace Lagerverwaltung.Controllers
         //Controller der Seite zum bearbeiten / hinzufügen
         public IActionResult CreateEditArtikel(int id)
         {
+            var model = new ArtikelVM
+            {
+                kategorienList = _context.Kategorien.ToList(),
+                selectKategorienList = new List<SelectListItem>()
+            };
+
+            foreach (var kategorie in _context.Kategorien)
+            {
+                string text = kategorie.Bezeichnung + " | " + kategorie.Bemerkungen;
+                model.selectKategorienList.Add(new SelectListItem() { Text = text, Value = kategorie.Id.ToString() });
+            }
+
             if (id != 0)
             {
                 var ArtikelFromDB = _context.Artikel.SingleOrDefault(x => x.Id == id);
+                var KategorienFromDB = _context.Kategorien.SingleOrDefault(x => x.Id == ArtikelFromDB.KategorieID);
 
-                if (ArtikelFromDB != null)
+                model.artikel = ArtikelFromDB;
+                model.kategorien = KategorienFromDB;
+
+                if (model != null)
                 {
-                    return View(ArtikelFromDB);
+                    return View(model);
                 }
                 else
                 {
                     return NotFound();
                 }
             }
-            return View();
+            return View(model);
         }
 
         //Controller der aufgerufen wird wenn der Speichern Button gedrückt wird
-        public IActionResult ExecuteCreateOrEditArtikel(Models.Artikel artikel)
+        public IActionResult ExecuteCreateOrEditArtikel(Models.Virtuell.ArtikelVM artikelVM)
         {
 
-            if (artikel.Id == 0)
+            if (artikelVM.artikel.Id == 0)
             {
 
-                _context.Artikel.Add(artikel);
+                _context.Artikel.Add(artikelVM.artikel);
             }
             else
             {
-                var ArtikelFromDB = _context.Artikel.SingleOrDefault(x => x.Id == artikel.Id);
+                var ArtikelFromDB = _context.Artikel.SingleOrDefault(x => x.Id == artikelVM.artikel.Id);
 
                 if (ArtikelFromDB == null)
                 {
                     return NotFound();
                 }
 
-                ArtikelFromDB.Name = artikel.Name;
-                ArtikelFromDB.KategorieID = artikel.KategorieID;
-                ArtikelFromDB.Beschreibung = artikel.Beschreibung;
+                ArtikelFromDB.Name = artikelVM.artikel.Name;
+                ArtikelFromDB.KategorieID = artikelVM.artikel.KategorieID;
+                ArtikelFromDB.Beschreibung = artikelVM.artikel.Beschreibung;
 
             }
 

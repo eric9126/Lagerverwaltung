@@ -9,6 +9,7 @@ namespace Lagerverwaltung.Data
         public DbSet<Artikel> Artikel { get; set; }
         public DbSet<Kategorien> Kategorien { get; set; }
         public DbSet<Kunde> Kunde { get; set; }
+        public DbSet<Standort> Standort { get; set; }
         public DbSet<Auftrag> Auftrag { get; set; }
         public DbSet<Positionen> Position { get; set; }
         public DbSet<Lagerplatz> Lagerplatz { get; set; }

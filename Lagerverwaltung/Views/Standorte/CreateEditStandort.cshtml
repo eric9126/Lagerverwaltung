@@ -1,0 +1,83 @@
+﻿@using Lagerverwaltung.Models
+@model Lagerverwaltung.Models.Virtuell.StandortVM
+
+@{
+    ViewData["Title"] = "Standort erstellen oder bearbeiten";
+}
+
+<form asp-controller="Standorte" asp-action="ExecuteCreateOrEditStandort" enctype="multipart/form-data">
+    <div class="card">
+        <div class="card-header">
+            <h5>Standort bearbeiten oder neu erstellen</h5>
+        </div>
+
+        <div class="card-body">
+
+            <input asp-for="standort.Id" type="number" hidden/>
+
+            <div class="row">                
+                <div class="col">
+                    <label>Standort Kunden ID</label>
+                    <input class="form-control" asp-for="standort.StandortId" type="number" />
+                </div>
+
+                <div class="col">
+                    <label>Kunde</label>
+                    <select class="form-select" asp-items="Model.selectKundenList" asp-for="standort.KundeID">
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <label>PLZ</label>
+                    <input class="form-control" asp-for="standort.PLZ" type="text" />
+                </div>
+                <div class="col">
+                    <label>Ort</label>
+                    <input class="form-control" asp-for="standort.Ort" type="text" />
+                </div>
+                <div class="col">
+                    <label>Land</label>
+                    <input class="form-control" asp-for="standort.Land" type="text" />
+                </div>
+                <div class="col">
+                    <label>Bundesland</label>
+                    <input class="form-control" asp-for="standort.Bundesland" type="text" />
+                </div>
+                <div class="col">
+                    <label>Straße</label>
+                    <input class="form-control" asp-for="standort.Strasse" type="text" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <label>Ansprechpartner</label>
+                    <input class="form-control" asp-for="standort.Ansprechpartner" type="text" />
+                </div>
+                <div class="col">
+                    <label>Telefon</label>
+                    <input class="form-control" asp-for="standort.Telefon" type="text" />
+                </div>
+                <div class="col">
+                    <label>Eintragungsdatum</label>
+                    <input class="form-control" asp-for="standort.Eintragungsdatum" type="text" />
+                </div>
+                <div class="col">
+                    <label>Schließungsdatum</label>
+                    <input class="form-control" asp-for="standort.Schliessungsdatum" type="text" />
+                </div>
+                <div class="col">
+                    <label>Standortbezeichnung</label>
+                    <input class="form-control" asp-for="standort.Standortbezeichnung" type="text" />
+                </div>
+            </div>
+            
+        </div>
+
+        <div class="card-footer">
+            <button class="btn btn-primary" type="submit">Speichern</button>
+            <button class="btn btn-danger" asp-controller="Standorte" asp-action="BackToStandort">Abbrechen</button>
+        </div>
+
+    </div>   
+</form>
