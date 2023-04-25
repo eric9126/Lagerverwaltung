@@ -1,0 +1,180 @@
+﻿@using Lagerverwaltung.Models
+@model Lagerverwaltung.Models.Virtuell.AuslieferungVM
+
+@{
+    ViewData["Title"] = "Auslieferung";
+}
+<div class="text-center">
+    <h1>Auftrag zur Auslieferung</h1>
+</div>
+
+<div class="container-fluid">
+
+    <table id="AuslieferungsTable" class="table table-bordered table-striped table-hover bg-light stripe">
+        <thead>
+            <tr>
+                <th>Auftrags Nr.</th>
+                <th>Kunden ID</th>
+                <th>Firma</th>
+                <th>Ansprechpartner</th>
+                <th>Standort ID</th>
+                <th>Standort Bezeichnung</th>
+                <th>Bemerkungen</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+
+                    <tr>
+                        <td>@Model.auftrag.Id</td>
+                        <td>@Model.auftrag.KundeID</td>
+                        
+                        @foreach (Kunde kunde in Model.kunden)
+                        {
+                            if (kunde.Id == Model.auftrag.KundeID)
+                            {
+                                <td>@kunde.Firma</td>
+                                <td>@kunde.Ansprechpartner</td>
+                            }
+                        }
+
+                        @foreach (Standort standort in Model.standorte)
+                        {
+                            if (standort.Id == Model.auftrag.StandortID)
+                            {
+                                <td>@standort.StandortId</td>
+                                <td>@standort.Standortbezeichnung</td>
+                            }
+                        }
+
+                        <td>@Model.auftrag.Bemerkungen</td>
+                    </tr>
+                
+            }
+        </tbody>
+    </table>
+</div>
+
+<div class="text-center">
+    <h1>Auftragspositionen</h1>
+</div>
+
+<div class="container-fluid">
+    <p>
+        <a class="btn btn-primary" asp-route-id="@Model.auftrag.Id" asp-controller="Auslieferung" asp-action="CreateEditPosition">neue Position zu Auslieferung anlegen</a>
+    </p>
+    <table id="PositionTable" class="table table-bordered table-striped table-hover bg-light stripe">
+        <thead>
+            <tr>
+                <th>Position Nr.</th>
+                <th>Auftrags ID</th>
+                <th>Artikel ID</th>
+                <th>Artikel Name</th>
+                <th>Menge</th>
+                <th>Lagerplatz</th>
+                <th>Seriennummer</th>
+                <th>MAC-Adresse</th>
+                <th>Bemerkungen</th>
+                <th>Löschen</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                foreach (Positionen Position in Model.positionen)
+                {
+                    if (Position.AuftragsID == Model.auftrag.Id)
+                    {
+                        <tr>
+                            <td>@Position.PositionsNummer</td>
+                            <td>@Position.AuftragsID</td>
+                            <td>@Position.ArtikelID</td>
+
+                            @{
+                                foreach (Artikel artikel in Model.artikelList)
+                                {
+                                    if(artikel.Id == Position.ArtikelID)
+                                    {
+                                        <td>@artikel.Name</td>
+                                    }                                    
+                                }
+                            }
+                            
+                            <td>@Position.Menge</td>
+
+                            @{
+                                foreach (Lagerplatz lagerplatz in Model.lagerplatzList)
+                                {
+                                    if (lagerplatz.Id == Position.LagerplatzID)
+                                    {
+                                        <td>@lagerplatz.Bezeichnung</td>
+                                    }
+                                }
+                            }
+
+                            <td>@Position.SerienNummer</td>
+                            <td>@Position.MACAdresse</td>
+                            <td>@Position.Bemerkungen</td>
+                            <td><button onclick="onClickedDeleteButton(@Position.Id)" class="btn btn-danger">löschen</button></td>
+
+                        </tr>
+                    }
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $('#AuslieferungsTable').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/German.json"
+                },
+                dom: 'Bfrtip',
+            });
+        });
+
+        $(document).ready(function () {
+            $('#PositionTable').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/German.json"
+                },
+                dom: 'Bfrtip',
+            });
+        });
+
+        function onClickedDeleteButton(id) {
+            Swal.fire({
+                title: 'Möchtest du den Eintrag wirklich löschen?',
+                icon: 'error',
+
+                showCloseButton: true,
+                focusConfirm: false,
+                confirmButtonText:
+                    'Ja, löschen!',
+            }).then((result) => {
+
+                if (result.isConfirmed) {
+
+                    $.ajax({
+                        type: "POST",
+                        url: "@Url.Action("DeleteById")",
+                        data: { id: id },
+                        success: function (msg) {
+
+                            Swal.fire('Eintrag wurde gelöscht!', '', 'success').then((result) => {
+                                location.reload();
+                            });
+                        },
+                        error: function (msg) {
+                            Swal.fire('UPS!', '', 'error')
+                        }
+                    });
+
+
+                }
+            })
+        }
+    </script>
+}

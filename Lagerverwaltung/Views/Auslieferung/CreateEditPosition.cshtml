@@ -1,0 +1,65 @@
+﻿@model Lagerverwaltung.Models.Virtuell.PositionenVM
+
+@{
+    ViewData["Title"] = "Position erstellen oder bearbeiten";
+}
+
+<form asp-controller="Auslieferung" asp-action="ExecuteCreateOrEditPosition" enctype="multipart/form-data">
+    <div class="card">
+        <div class="card-header">
+            <h5>Position bearbeiten oder neu erstellen</h5>
+        </div>
+
+        <div class="card-body">
+
+            <input hidden asp-for="position.Id"/>
+
+            <div class="row">
+                <div class="col">
+                    <label>Auftrags-ID</label>
+                    <select class="form-select" asp-items="Model.selectAuftraegeList" asp-for="position.AuftragsID">
+                    </select>
+                </div>
+                <div class="col">
+                    <label>Positions Nummer</label>
+                    <input class="form-control" asp-for="position.PositionsNummer" type="number" />
+                </div>
+                <div class="col">
+                    <label>Artikel ID</label>
+                    <select class="form-select" asp-items="Model.selectArtikelList" asp-for="position.ArtikelID">
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <label>Menge</label>
+                    <input class="form-control" asp-for="position.Menge" type="number" />
+                </div>
+                <div class="col">
+                    <label>Lagerplatz-ID</label>
+                    <select class="form-select" asp-items="Model.selectLagerplaetzeList" asp-for="position.LagerplatzID">
+                    </select>
+                </div>
+                <div class="col">
+                    <label>Seriennummer</label>
+                    <input class="form-control" asp-for="position.SerienNummer" type="text" />
+                </div>
+                <div class="col">
+                    <label>MAC-Adresse</label>
+                    <input class="form-control" asp-for="position.MACAdresse" type="text" />
+                </div>
+                <div class="col">
+                    <label>Bemerkungen</label>
+                    <input class="form-control" asp-for="position.Bemerkungen" type="text" />
+                </div>
+            </div>
+            
+        </div>
+
+        <div class="card-footer">
+            <button class="btn btn-primary" type="submit">Speichern</button>
+            <button class="btn btn-danger" asp-controller="Auslieferung" asp-action="BackToAuslieferung">Abbrechen</button>
+        </div>
+
+    </div>   
+</form>

@@ -11,6 +11,9 @@ namespace Lagerverwaltung.Models
         [ForeignKey("Kunde")]
         public int KundeID { get; set; }
         public virtual Kunde? Kunde { get; set; }
+
+        public int StandortID { get; set; }
+
         public string? Bemerkungen { get; set; }
         public bool Gebucht { get; set; }
     }

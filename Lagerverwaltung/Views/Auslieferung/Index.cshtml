@@ -5,3 +5,77 @@
 <div class="text-center">
     <h1>Auslieferung</h1>
 </div>
+
+<div class="container-fluid">
+
+    <table id="AuslieferungsTable" class="table table-bordered table-striped table-hover bg-light stripe">
+        <thead>
+            <tr>
+                <th>Auftrags Nr.</th>
+                <th>Kunden ID</th>
+                <th>Firma</th>
+                <th>Ansprechpartner</th>
+                <th>Standort ID</th>
+                <th>Standort Bezeichnung</th>
+                <th>Bemerkungen</th>
+                <th>Gebucht</th>
+                <th>Ausliefern</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                foreach (Auftrag Auftrage in Model.Auftrag)
+                {
+                    <tr>
+                        <td>@Auftrage.Id</td>
+                        <td>@Auftrage.KundeID</td>
+
+                        @foreach (Kunde kunde in Model.Kunde)
+                        {
+                            if (kunde.Id == Auftrage.KundeID)
+                            {
+                                <td>@kunde.Firma</td>
+                                <td>@kunde.Ansprechpartner</td>
+                            }
+                        }
+
+                        @foreach (Standort standort in Model.Standort)
+                        {
+                            if (standort.Id == Auftrage.StandortID)
+                            {
+                                <td>@standort.StandortId</td>
+                                <td>@standort.Standortbezeichnung</td>
+                            }
+                        }
+
+                        <td>@Auftrage.Bemerkungen</td>
+                        <th>@Auftrage.Gebucht</th>
+                        <td><a asp-route-id="@Auftrage.Id" class="btn btn-warning" asp-controller="Auslieferung" asp-action="Ausliefern">ausliefern</a></td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $('#AuslieferungsTable').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/German.json"
+                },
+                buttons: [
+                    {
+                        extend: 'searchBuilder',
+                        config: {
+                            depthLimit: 2
+                        }
+                    }
+                ],
+                dom: 'Bfrtip',
+            });
+        });
+        
+    </script>
+}

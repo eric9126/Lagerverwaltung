@@ -26,6 +26,7 @@ namespace Lagerverwaltung.Controllers
             dynamic mymodel = new ExpandoObject();
             mymodel.Auftrag = _context.Auftrag.ToList();
             mymodel.Kunde = _context.Kunde.ToList();
+            mymodel.Standort = _context.Standort.ToList();
 
             return View(mymodel);
         }
@@ -37,23 +38,32 @@ namespace Lagerverwaltung.Controllers
             var model = new AuftragVM
             {
                 kunden = _context.Kunde.ToList(),
-                selectKundenList = new List<SelectListItem>() 
+                selectKundenList = new List<SelectListItem>(),
+                standorte = _context.Standort.ToList(),
+                selectStandortList = new List<SelectListItem>()
             };
 
             foreach (var kunde in _context.Kunde)
             {
-                string text = kunde.Name + " | " + kunde.Firma;
+                string text = kunde.Name + " " + kunde.Vorname + " | " + kunde.Firma;
                 model.selectKundenList.Add(new SelectListItem() { Text = text, Value = kunde.Id.ToString() });
+            }
+
+            foreach (var standort in _context.Standort)
+            {
+                string text = standort.StandortId + " | " + standort.Standortbezeichnung + " | " + standort.Ort;
+                model.selectStandortList.Add(new SelectListItem() { Text = text, Value = standort.Id.ToString() });
             }
 
             if (id != 0)
             {
                 var AuftragFromDB = _context.Auftrag.SingleOrDefault(x => x.Id == id);
                 var KundeFromDB = _context.Kunde.SingleOrDefault(x => x.Id == AuftragFromDB.KundeID);
+                var StandortFromDB = _context.Standort.SingleOrDefault(x => x.Id == AuftragFromDB.StandortID);
 
                 model.auftrag = AuftragFromDB;
                 model.kunde = KundeFromDB;
-
+                model.standort = StandortFromDB;
 
                 if (model != null)
                 {
@@ -86,6 +96,7 @@ namespace Lagerverwaltung.Controllers
                 }
 
                 AuftragFromDB.KundeID = auftragVM.auftrag.KundeID;
+                AuftragFromDB.StandortID = auftragVM.auftrag.StandortID;
                 AuftragFromDB.Bemerkungen = auftragVM.auftrag.Bemerkungen;
 
             }
@@ -244,7 +255,7 @@ namespace Lagerverwaltung.Controllers
 
                 foreach (Auftrag auftragsSchleife in records)
                 {
-                    auftragsListe.Add(new Auftrag() { KundeID = auftragsSchleife.KundeID, Bemerkungen = auftragsSchleife.Bemerkungen, Gebucht = auftragsSchleife.Gebucht });
+                    auftragsListe.Add(new Auftrag() { KundeID = auftragsSchleife.KundeID, StandortID = auftragsSchleife.StandortID, Bemerkungen = auftragsSchleife.Bemerkungen, Gebucht = auftragsSchleife.Gebucht });
 
                 }
                 _context.Auftrag.AddRange(auftragsListe);

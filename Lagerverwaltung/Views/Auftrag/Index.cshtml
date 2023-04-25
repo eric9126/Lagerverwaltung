@@ -19,10 +19,13 @@
                 <th>Kunden ID</th>
                 <th>Firma</th>
                 <th>Ansprechpartner</th>
+                <th>Standort ID</th>
+                <th>Standort Bezeichnung</th>
                 <th>Bemerkungen</th>
                 <th>Gebucht</th>
                 <th>Bearbeiten</th>
                 <th>Buchungen</th>
+                <th>Auslieferung</th>
                 <th>Löschen</th>
             </tr>
         </thead>
@@ -43,6 +46,15 @@
                             }
                         }
 
+                        @foreach (Standort standort in Model.Standort)
+                        {
+                            if (standort.Id == Auftrage.StandortID)
+                            {
+                                <td>@standort.StandortId</td>
+                                <td>@standort.Standortbezeichnung</td>
+                            }
+                        }
+
                         <td>@Auftrage.Bemerkungen</td>
                         <th>@Auftrage.Gebucht</th>
                         <td><a asp-route-id="@Auftrage.Id" class="btn btn-warning" asp-controller="Auftrag" asp-action="CreateEditAuftrag">bearbeiten</a></td>
@@ -57,6 +69,7 @@
                             <td><a asp-route-id="@Auftrage.Id" class="btn btn-warning" asp-controller="Auftrag" asp-action="AuftragZurueckBuchen">Auftrag zurück buchen</a></td>
                         }
 
+                        <td><a asp-route-id="@Auftrage.Id" class="btn btn-warning" asp-controller="Auslieferung" asp-action="Ausliefern">ausliefern</a></td>
                         <td><button onclick="onClickedDeleteButton(@Auftrage.Id)" class="btn btn-danger">löschen</button></td>
                     </tr>
                 }
